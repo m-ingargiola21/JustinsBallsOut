@@ -11,7 +11,7 @@ public class LiftRampsAfterStart : MonoBehaviour
 
     bool canLiftRamp;
     bool isFirstRound = true;
-    float liftSpeed = 10.0f;
+    float liftSpeed = 1f;
     float startTime;
     float distanceToMoveRamp;
     WaitForSeconds secondsToWaitBeforeLiftingRamp = new WaitForSeconds(6.5f);
