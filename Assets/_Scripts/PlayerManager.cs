@@ -1,16 +1,19 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Networking;
 
 [Serializable]
-public class PlayerManager
+public class PlayerManager: NetworkLobbyPlayer
 {
+    [SyncVar]
     public Color playerColor;
+    [SyncVar]
     public Transform spawnPoint;
-    [HideInInspector]
+    [HideInInspector][SyncVar]
     public int playerNumber;
-    [HideInInspector]
+    [HideInInspector][SyncVar]
     public string coloredPlayerText;
-    [HideInInspector]
+    [HideInInspector][SyncVar]
     public GameObject instance;
     [HideInInspector]
     public int wins;
