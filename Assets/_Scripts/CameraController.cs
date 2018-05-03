@@ -8,7 +8,7 @@ public class CameraController : MonoBehaviour
     [SerializeField]
     Transform gamePlayCameraPoint;
 
-    float cameraMoveSpeed = 10.0f;
+    float cameraMoveSpeed = 5.0f;
     float cameraRotationSpeed = .25f;
     float startTime;
     float distanceToMoveCamera;
@@ -22,20 +22,34 @@ public class CameraController : MonoBehaviour
 	
 	void Update ()
     {
-        if (hasFinishedWaiting)
-        {
-            MoveCameraToGamePosition();
 
-            RotateCameraToGamePosition();
-        }
     }
 
     IEnumerator WaitForRoundToStart()
     {
+        float distanceCovered;
+        float rotationCovered;
+        float fractionOfDistance;
+
         yield return new WaitForSeconds(timeToWait);
 
         hasFinishedWaiting = true;
         startTime = Time.time;
+
+        while (transform.position != gamePlayCameraPoint.position && transform.rotation != gamePlayCameraPoint.rotation)
+        {
+            distanceCovered = (Time.time - startTime) * cameraMoveSpeed;
+            rotationCovered = (Time.time - startTime) * cameraRotationSpeed;
+            fractionOfDistance = distanceCovered / distanceToMoveCamera;
+
+            if (fractionOfDistance > 1)
+                fractionOfDistance = 1;
+
+            transform.position = Vector3.Lerp(startCameraPoint.position, gamePlayCameraPoint.position, fractionOfDistance);
+            transform.rotation = Quaternion.Slerp(startCameraPoint.rotation, gamePlayCameraPoint.rotation, rotationCovered);
+
+            yield return null;
+        }
     }
 
     public void ResetCamera()
@@ -47,15 +61,4 @@ public class CameraController : MonoBehaviour
         StartCoroutine(WaitForRoundToStart());
     }
 
-    void MoveCameraToGamePosition()
-    {
-        float distanceCovered = (Time.time - startTime) * cameraMoveSpeed;
-        float fractionOfDistance = distanceCovered / distanceToMoveCamera;
-        transform.position = Vector3.Lerp(startCameraPoint.position, gamePlayCameraPoint.position, fractionOfDistance);
-    }
-
-    void RotateCameraToGamePosition()
-    {
-        transform.rotation = Quaternion.Slerp(startCameraPoint.rotation, gamePlayCameraPoint.rotation, (Time.time - startTime) * cameraRotationSpeed);
-    }
 }

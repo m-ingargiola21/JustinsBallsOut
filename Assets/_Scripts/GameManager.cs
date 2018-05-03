@@ -5,22 +5,14 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField]
-    int numRoundsToWin = 3;
-    [SerializeField]
-    Text messageText;
-    [SerializeField]
-    CameraController cameraControl;
-    [SerializeField]
-    GameObject playerPrefab;
-    [SerializeField]
-    CameraController mainCamera;
-    [SerializeField]
-    LiftRampsAfterStart[] allRamps;
-    [SerializeField]
-    DropRingAfterTime[] allStagePieces;
-    [SerializeField]
-    PlayerManager[] players;
+    [SerializeField] int numRoundsToWin = 3;
+    [SerializeField] Text messageText;
+    [SerializeField] CameraController cameraControl;
+    [SerializeField] GameObject playerPrefab;
+    [SerializeField] CameraController mainCamera;
+    [SerializeField] LiftRampsAfterStart[] allRamps;
+    [SerializeField] DropRingAfterTime[] allStagePieces;
+    [SerializeField] PlayerManager[] players;
     public PlayerManager[] Players
     {
         get { return players; }
@@ -97,7 +89,7 @@ public class GameManager : MonoBehaviour
 
         messageText.text = string.Empty;
 
-        while (!OneTankLeft())
+        while (!OnePlayerLeft())
         {
             yield return null;
         }
@@ -105,7 +97,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator WaitToEnablePlayers()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1f);
 
         EnablePlayerControl();
     }
@@ -139,17 +131,17 @@ public class GameManager : MonoBehaviour
     }
 
 
-    private bool OneTankLeft()
+    private bool OnePlayerLeft()
     {
-        int numTanksLeft = 0;
+        int numPlayersLeft = 0;
 
         for (int i = 0; i < players.Length; i++)
         {
             if (players[i].instance.activeSelf)
-                numTanksLeft++;
+                numPlayersLeft++;
         }
 
-        return numTanksLeft <= 1;
+        return numPlayersLeft <= 1;
     }
 
     void LockPlayersYAxis()

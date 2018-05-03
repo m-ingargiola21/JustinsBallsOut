@@ -1,26 +1,24 @@
 ﻿using UnityEngine;
+using UnityStandardAssets.CrossPlatformInput;
 
 public class PlayerMovement : MonoBehaviour
 {
     public int playerNumber = 1;
-    public float speed = 100f;
-    //public float turnSpeed = 180f;
+    public float speed = 10f;
+    public float jumpControlReduction = 4f;
 
-    //public AudioSource m_MovementAudio;
-    //public AudioClip m_EngineIdling;
-    //public AudioClip m_EngineDriving;
-    //public float m_PitchRange = 0.2f;
-
-    float jumpThrust = .5f;
+    float jumpThrust = 1.5f;
     string moveHorizontal;
     string moveVertical;
     string jumpInput;
+    string fireInput;
     Rigidbody rigidBody;
     float horizontalInputValue;
     float verticalInputValue;
     float originalPitch;
-
     float distToGround;
+    bool hasPowerUp;
+    public bool HasPowerUp { get { return hasPowerUp; } }
 
     bool IsGrounded()
     {
@@ -52,52 +50,25 @@ public class PlayerMovement : MonoBehaviour
         moveVertical = "Vertical" + playerNumber;
         moveHorizontal = "Horizontal" + playerNumber;
         jumpInput = "Jump" + playerNumber;
-
-        //m_OriginalPitch = m_MovementAudio.pitch;
+        fireInput = "Fire" + playerNumber;
+        
     }
 
     void Update()
     {
-        if (Input.GetButtonDown(jumpInput) && IsGrounded())
+        if (CrossPlatformInputManager.GetButtonDown(jumpInput) && IsGrounded())
         {
             Jump();
         }
-        // Store the player's input and make sure the audio for the engine is playing.
-        horizontalInputValue = Input.GetAxis(moveHorizontal);
-        verticalInputValue = Input.GetAxis(moveVertical);
+
+        horizontalInputValue = CrossPlatformInputManager.GetAxis(moveHorizontal);
+        verticalInputValue = CrossPlatformInputManager.GetAxis(moveVertical);
         
-        //EngineAudio();
     }
-
-
-    //private void EngineAudio()
-    //{
-    //    // Play the correct audio clip based on whether or not the tank is moving and what audio is currently playing.
-    //    if (Mathf.Abs(m_MovementInputValue) < 0.1f && Mathf.Abs(m_TurnInputValue) < 0.1f)
-    //    {
-    //        if (m_MovementAudio.clip == m_EngineDriving)
-    //        {
-    //            m_MovementAudio.clip = m_EngineIdling;
-    //            m_MovementAudio.pitch = Random.Range(m_OriginalPitch - m_PitchRange, m_OriginalPitch + m_PitchRange);
-    //            m_MovementAudio.Play();
-    //        }
-    //    }
-    //    else
-    //    {
-    //        if (m_MovementAudio.clip == m_EngineIdling)
-    //        {
-    //            m_MovementAudio.clip = m_EngineDriving;
-    //            m_MovementAudio.pitch = Random.Range(m_OriginalPitch - m_PitchRange, m_OriginalPitch + m_PitchRange);
-    //            m_MovementAudio.Play();
-    //        }
-    //    }
-
-    //}
-
 
     void FixedUpdate()
     {
-        // Move and turn the tank.
+        // Move and turn the player.
         Move();
     }
 
@@ -106,21 +77,43 @@ public class PlayerMovement : MonoBehaviour
         // Adjust the position of the tank based on the player's input.
         Vector3 movement = new Vector3(horizontalInputValue, 0.0f, verticalInputValue);
 
-        rigidBody.AddForce(movement * speed);
+        if(IsGrounded())
+        {
+            rigidBody.AddForce(movement * speed);
+        }
+        else
+        {
+            rigidBody.AddForce(movement * (speed / jumpControlReduction));
+        }
+        
     }
 
     void Jump()
     {
         this.rigidBody.AddForce(0, jumpThrust * speed, 0, ForceMode.Impulse);
     }
+    
+    public void GetPowerUp(PowerUp.PowerUpTypes powerUpType)
+    {
+        switch(powerUpType)
+        {
+            case PowerUp.PowerUpTypes.OilSlick:
+                //OilSlick setup here
+                break;
+            case PowerUp.PowerUpTypes.AirControl:
+                //AirControl setup here
+                break;
+            case PowerUp.PowerUpTypes.MetalBall:
+                //MetalBall setup here
+                break;
+            case PowerUp.PowerUpTypes.SuperJump:
+                //SuperJump setup here
+                break;
+            default:
+                Debug.Log("Got wrong PowerUpType!");
+                break;
+        }
 
-    //void Turn()
-    //{
-    //    // Adjust the rotation of the tank based on the player's input.
-    //    float turn = verticalInputValue * turnSpeed * Time.deltaTime;
-
-    //    Quaternion turnRotation = Quaternion.Euler(0f, turn, 0f);
-
-    //    rigidBody.MoveRotation(rigidBody.rotation * turnRotation);
-    //}
+        hasPowerUp = true;
+    }
 }

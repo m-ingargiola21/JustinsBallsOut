@@ -5,12 +5,9 @@ using UnityEngine.SceneManagement;
 public class InformationFromMenuToGameManager : MonoBehaviour
 {
 
-    [SerializeField]
-    GameObject gameObjectHoldingScriptToSaveData;
-    [SerializeField]
-    GameObject players3Button;
-    [SerializeField]
-    GameObject players4Button;
+    [SerializeField] GameObject gameObjectHoldingScriptToSaveData;
+    [SerializeField] GameObject players3Button;
+    [SerializeField] GameObject players4Button;
 
     int sceneToLoadIndex = 1;
     bool haveAllPlayersSelectedColors;
