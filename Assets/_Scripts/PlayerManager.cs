@@ -6,14 +6,10 @@ public class PlayerManager
 {
     public Color playerColor;
     public Transform spawnPoint;
-    [HideInInspector]
-    public int playerNumber;
-    [HideInInspector]
-    public string coloredPlayerText;
-    [HideInInspector]
-    public GameObject instance;
-    [HideInInspector]
-    public int wins;
+    [HideInInspector] public int playerNumber;
+    [HideInInspector] public string coloredPlayerText;
+    [HideInInspector] public GameObject instance;
+    [HideInInspector] public int wins;
 
 
     private PlayerMovement movement;
