@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using GoogleARCore;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
-public class TouchInputManager : MonoBehaviour
+public class TouchInputManager : NetworkBehaviour
 {
     //[SerializeField] TextMesh textMesh;
+    
     Touch touch;
     bool isCoroutineRunning = false;
     float delayTime = 1.0f;
