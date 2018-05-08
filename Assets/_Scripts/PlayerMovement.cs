@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using UnityStandardAssets.CrossPlatformInput;
+using UnityEngine.Networking;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : NetworkBehaviour
 {
     public int playerNumber = 1;
+    public int localID = 1;
     public float speed = 10f;
     public float jumpControlReduction = 4f;
 
@@ -19,6 +22,10 @@ public class PlayerMovement : MonoBehaviour
     float distToGround;
     bool hasPowerUp;
     public bool HasPowerUp { get { return hasPowerUp; } }
+
+    private GameObject jumpButton;
+    private GameObject mobileJoystick;
+    private GameObject fireButton;
 
     bool IsGrounded()
     {
@@ -47,15 +54,34 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         distToGround = GetComponent<Collider>().bounds.extents.y;
-        moveVertical = "Vertical" + playerNumber;
-        moveHorizontal = "Horizontal" + playerNumber;
-        jumpInput = "Jump" + playerNumber;
-        fireInput = "Fire" + playerNumber;
+
+        InputSetup();
+    }
+
+    void InputSetup()
+    {
+        moveVertical = "Vertical" + (localID + 1);
+        moveHorizontal = "Horizontal" + (localID + 1);
+        jumpInput = "Jump" + (localID + 1);
+        fireInput = "Fire" + (localID + 1);
         
+        mobileJoystick = GameObject.Find("MobileJoystick");
+        mobileJoystick.GetComponent<Joystick>().horizontalAxisName = moveHorizontal;
+        mobileJoystick.GetComponent<Joystick>().verticalAxisName = moveVertical;
+
+        jumpButton = GameObject.Find("JumpButton");
+        jumpButton.GetComponent<ButtonHandler>().Name = jumpInput;
+
+        fireButton = GameObject.Find("FireButton");
+        fireButton.GetComponent<ButtonHandler>().Name = fireInput;
+
     }
 
     void Update()
     {
+        if (!isLocalPlayer)
+            return;
+
         if (CrossPlatformInputManager.GetButtonDown(jumpInput) && IsGrounded())
         {
             Jump();
@@ -68,6 +94,9 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (!isLocalPlayer)
+            return;
+
         // Move and turn the player.
         Move();
     }
@@ -92,7 +121,16 @@ public class PlayerMovement : MonoBehaviour
     {
         this.rigidBody.AddForce(0, jumpThrust * speed, 0, ForceMode.Impulse);
     }
-    
+
+    public void SetDefaults()
+    {
+        rigidBody.velocity = Vector3.zero;
+        rigidBody.angularVelocity = Vector3.zero;
+
+        horizontalInputValue = 0f;
+        verticalInputValue = 0f;
+    }
+
     public void GetPowerUp(PowerUp.PowerUpTypes powerUpType)
     {
         switch(powerUpType)

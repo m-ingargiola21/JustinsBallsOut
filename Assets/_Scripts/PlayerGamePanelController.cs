@@ -1,19 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
-public class PlayerGamePanelController : MonoBehaviour
+public class PlayerGamePanelController : NetworkBehaviour
 {
-    [SerializeField]
-    int playerNumber;
-    [SerializeField]
-    Image firstRoundWinIndicator;
-    [SerializeField]
-    Image secondRoundWinIndicator;
-    [SerializeField]
-    Image thirdRoundWinIndicator;
-    [SerializeField]
-    GameManager gameManager;
+    [SerializeField] int playerNumber;
+    [SerializeField] Image firstRoundWinIndicator;
+    [SerializeField] Image secondRoundWinIndicator;
+    [SerializeField] Image thirdRoundWinIndicator;
 
     void Update()
     {
@@ -22,20 +17,20 @@ public class PlayerGamePanelController : MonoBehaviour
 
     void UpdateRoundsWonIndicator()
     {
-        if (gameManager.Players[playerNumber - 1].wins == 1)
+        if (GameManager.players[playerNumber - 1].wins == 1)
         {
-            firstRoundWinIndicator.color = gameManager.Players[playerNumber - 1].playerColor;
+            firstRoundWinIndicator.color = GameManager.players[playerNumber - 1].playerColor;
         }
-        else if (gameManager.Players[playerNumber - 1].wins == 2)
+        else if (GameManager.players[playerNumber - 1].wins == 2)
         {
-            firstRoundWinIndicator.color = gameManager.Players[playerNumber - 1].playerColor;
-            secondRoundWinIndicator.color = gameManager.Players[playerNumber - 1].playerColor;
+            firstRoundWinIndicator.color = GameManager.players[playerNumber - 1].playerColor;
+            secondRoundWinIndicator.color = GameManager.players[playerNumber - 1].playerColor;
         }
-        else if (gameManager.Players[playerNumber - 1].wins == 3)
+        else if (GameManager.players[playerNumber - 1].wins == 3)
         {
-            firstRoundWinIndicator.color = gameManager.Players[playerNumber - 1].playerColor;
-            secondRoundWinIndicator.color = gameManager.Players[playerNumber - 1].playerColor;
-            thirdRoundWinIndicator.color = gameManager.Players[playerNumber - 1].playerColor;
+            firstRoundWinIndicator.color = GameManager.players[playerNumber - 1].playerColor;
+            secondRoundWinIndicator.color = GameManager.players[playerNumber - 1].playerColor;
+            thirdRoundWinIndicator.color = GameManager.players[playerNumber - 1].playerColor;
         }
     }
     
