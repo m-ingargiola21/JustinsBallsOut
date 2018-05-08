@@ -13,24 +13,38 @@ public class PlayerGamePanelController : NetworkBehaviour
     void Update()
     {
         UpdateRoundsWonIndicator();
+        RpcUpdateRoundsWonIndicator();
     }
 
     void UpdateRoundsWonIndicator()
     {
-        if (GameManager.players[playerNumber - 1].wins == 1)
+        RoundsWondUIUpdate();
+    }
+
+    [ClientRpc]
+    public void RpcUpdateRoundsWonIndicator()
+    {
+        RoundsWondUIUpdate();
+    }
+
+    private void RoundsWondUIUpdate()
+    {
+        switch(GameManager.players[playerNumber - 1].wins)
         {
-            firstRoundWinIndicator.color = GameManager.players[playerNumber - 1].playerColor;
-        }
-        else if (GameManager.players[playerNumber - 1].wins == 2)
-        {
-            firstRoundWinIndicator.color = GameManager.players[playerNumber - 1].playerColor;
-            secondRoundWinIndicator.color = GameManager.players[playerNumber - 1].playerColor;
-        }
-        else if (GameManager.players[playerNumber - 1].wins == 3)
-        {
-            firstRoundWinIndicator.color = GameManager.players[playerNumber - 1].playerColor;
-            secondRoundWinIndicator.color = GameManager.players[playerNumber - 1].playerColor;
-            thirdRoundWinIndicator.color = GameManager.players[playerNumber - 1].playerColor;
+            case 1:
+                firstRoundWinIndicator.color = GameManager.players[playerNumber - 1].playerColor;
+                break;
+            case 2:
+                firstRoundWinIndicator.color = GameManager.players[playerNumber - 1].playerColor;
+                secondRoundWinIndicator.color = GameManager.players[playerNumber - 1].playerColor;
+                break;
+            case 3:
+                firstRoundWinIndicator.color = GameManager.players[playerNumber - 1].playerColor;
+                secondRoundWinIndicator.color = GameManager.players[playerNumber - 1].playerColor;
+                thirdRoundWinIndicator.color = GameManager.players[playerNumber - 1].playerColor;
+                break;
+            default:
+                break;
         }
     }
     
