@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class ColorPicker : MonoBehaviour
 {
     Color selectedColor;
-    [SerializeField] GameObject playerBall;
+    [SerializeField] List<GameObject> playerBall;
 
 	// Use this for initialization
 	void Start ()
@@ -18,7 +18,10 @@ public class ColorPicker : MonoBehaviour
 
     private void DefaultColor()
     {
-       playerBall.GetComponent<MeshRenderer>().material.color = Color.blue;
+        foreach(GameObject go in playerBall)
+        {
+            GetComponent<MeshRenderer>().material.color = Color.blue;
+        }
 
     }
 
@@ -32,7 +35,11 @@ public class ColorPicker : MonoBehaviour
 
     public void PickColor()
     {
-            playerBall.GetComponent<MeshRenderer>().material.color = selectedColor;
+        foreach (GameObject go in playerBall)
+        {
+            go.GetComponent<MeshRenderer>().material.color = selectedColor;
+        }
+       
     }
 
 }
