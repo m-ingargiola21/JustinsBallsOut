@@ -22,6 +22,8 @@ public class GameManager : NetworkBehaviour
     [SerializeField] LiftRampsAfterStart[] allRamps;
     [SerializeField] DropRingAfterTime[] allStagePieces;
     [SerializeField] Transform[] allSpawnPoints;
+
+    public GameObject[] PlayerControls;
     //[SerializeField] PlayerManager[] players;
     //public PlayerManager[] Players
     //{
