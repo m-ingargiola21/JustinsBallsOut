@@ -2009,7 +2009,11 @@ public class Reporter : MonoBehaviour
 				streamingAssetsPath = Application.dataPath + "/StreamingAssets/";
 			url = System.IO.Path.Combine(streamingAssetsPath, prefFile);
 		}
-        
+
+		
+		if (!url.Contains("://"))
+			url = "file://" + url;
+
 
 		// float startTime = Time.realtimeSinceStartup;
 		WWW www = new WWW(url);

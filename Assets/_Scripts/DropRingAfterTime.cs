@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Networking;
 
-public class DropRingAfterTime : MonoBehaviour
+public class DropRingAfterTime : NetworkBehaviour
 {
 
     [SerializeField]

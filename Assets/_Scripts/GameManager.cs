@@ -70,10 +70,9 @@ public class GameManager : NetworkBehaviour
         tmp.playerName = name;
         tmp.localPlayerID = localID;
         tmp.Setup();
+        tmp.spawnPoint = instance.allSpawnPoints[playerNum - 1];
 
         players.Add(tmp);
-
-        tmp.spawnPoint = instance.allSpawnPoints[playerNum - 1];
     }
 
     public void RemovePlayer(GameObject Player)
@@ -92,16 +91,16 @@ public class GameManager : NetworkBehaviour
             players.Remove(toRemove);
     }
 
-    private void SpawnAllPlayers()
-    {
-        for (int i = 0; i < players.Count; i++)
-        {
-            players[i].instance =
-                Instantiate(playerPrefab, players[i].spawnPoint.transform.position, players[i].spawnPoint.transform.rotation) as GameObject;
-            players[i].playerNumber = i + 1;
-            players[i].Setup();
-        }
-    }
+    //private void SpawnAllPlayers()
+    //{
+    //    for (int i = 0; i < players.Count; i++)
+    //    {
+    //        players[i].instance =
+    //            Instantiate(playerPrefab, players[i].spawnPoint.transform.position, players[i].spawnPoint.transform.rotation) as GameObject;
+    //        players[i].playerNumber = i + 1;
+    //        players[i].Setup();
+    //    }
+    //}
 
     private IEnumerator GameLoop()
     {
@@ -201,7 +200,10 @@ public class GameManager : NetworkBehaviour
 
             //sometime, synchronization lag behind because of packet drop, so we make sure our tank are reseted
             if (elapsedTime / wait < 0.5f)
+            {
                 ResetAllPlayers();
+                Debug.Log("Reset all players");
+            }
 
             yield return null;
         }
@@ -222,6 +224,7 @@ public class GameManager : NetworkBehaviour
     void RpcRoundPlaying()
     {
         MakeAllPlayersNotKinimetic();
+        EnablePlayerControl();
         StartCoroutine(WaitToEnablePlayers());
 
         // Clear the text from the screen.
@@ -245,7 +248,7 @@ public class GameManager : NetworkBehaviour
 
     private IEnumerator RoundEnding()
     {
-        DisablePlayerControl();
+        //DisablePlayerControl();
 
         roundWinner = null;
 
@@ -257,7 +260,10 @@ public class GameManager : NetworkBehaviour
         gameWinner = GetGameWinner();
 
         RpcUpdateMessage(EndMessage(0));
-        
+
+        RpcRoundEnding();
+
+
         yield return endWait;
     }
 

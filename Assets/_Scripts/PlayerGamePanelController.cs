@@ -12,10 +12,13 @@ public class PlayerGamePanelController : NetworkBehaviour
 
     void Update()
     {
-        UpdateRoundsWonIndicator();
-        RpcUpdateRoundsWonIndicator();
+        if(isServer)
+            UpdateRoundsWonIndicator();
+        else
+            RpcUpdateRoundsWonIndicator();
     }
 
+    [ServerCallback]
     void UpdateRoundsWonIndicator()
     {
         RoundsWondUIUpdate();
@@ -29,22 +32,25 @@ public class PlayerGamePanelController : NetworkBehaviour
 
     private void RoundsWondUIUpdate()
     {
-        switch(GameManager.players[playerNumber - 1].wins)
+        if(GameManager.players.Count >= playerNumber - 1)
         {
-            case 1:
-                firstRoundWinIndicator.color = GameManager.players[playerNumber - 1].playerColor;
-                break;
-            case 2:
-                firstRoundWinIndicator.color = GameManager.players[playerNumber - 1].playerColor;
-                secondRoundWinIndicator.color = GameManager.players[playerNumber - 1].playerColor;
-                break;
-            case 3:
-                firstRoundWinIndicator.color = GameManager.players[playerNumber - 1].playerColor;
-                secondRoundWinIndicator.color = GameManager.players[playerNumber - 1].playerColor;
-                thirdRoundWinIndicator.color = GameManager.players[playerNumber - 1].playerColor;
-                break;
-            default:
-                break;
+            switch (GameManager.players[playerNumber - 1].wins)
+            {
+                case 1:
+                    firstRoundWinIndicator.color = GameManager.players[playerNumber - 1].playerColor;
+                    break;
+                case 2:
+                    firstRoundWinIndicator.color = GameManager.players[playerNumber - 1].playerColor;
+                    secondRoundWinIndicator.color = GameManager.players[playerNumber - 1].playerColor;
+                    break;
+                case 3:
+                    firstRoundWinIndicator.color = GameManager.players[playerNumber - 1].playerColor;
+                    secondRoundWinIndicator.color = GameManager.players[playerNumber - 1].playerColor;
+                    thirdRoundWinIndicator.color = GameManager.players[playerNumber - 1].playerColor;
+                    break;
+                default:
+                    break;
+            }
         }
     }
     

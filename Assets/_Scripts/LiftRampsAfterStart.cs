@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Networking;
 
-public class LiftRampsAfterStart : MonoBehaviour
+public class LiftRampsAfterStart : NetworkBehaviour
 {
     [SerializeField]
     Transform spawnPoint;

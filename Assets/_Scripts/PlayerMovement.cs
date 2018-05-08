@@ -64,16 +64,8 @@ public class PlayerMovement : NetworkBehaviour
         moveHorizontal = "Horizontal" + (localID + 1);
         jumpInput = "Jump" + (localID + 1);
         fireInput = "Fire" + (localID + 1);
-        
-        mobileJoystick = GameObject.Find("MobileJoystick");
-        mobileJoystick.GetComponent<Joystick>().horizontalAxisName = moveHorizontal;
-        mobileJoystick.GetComponent<Joystick>().verticalAxisName = moveVertical;
 
-        jumpButton = GameObject.Find("JumpButton");
-        jumpButton.GetComponent<ButtonHandler>().Name = jumpInput;
-
-        fireButton = GameObject.Find("FireButton");
-        fireButton.GetComponent<ButtonHandler>().Name = fireInput;
+        GameManager.instance.PlayerControls[playerNumber - 1].SetActive(true);
 
     }
 
