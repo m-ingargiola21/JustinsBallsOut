@@ -12,16 +12,17 @@ public class PlayerGamePanelController : NetworkBehaviour
 
     void Update()
     {
-        if(isServer)
-            UpdateRoundsWonIndicator();
-        else
-            RpcUpdateRoundsWonIndicator();
+        if (!isServer)
+            return;
+
+        UpdateRoundsWonIndicator();
     }
 
     [ServerCallback]
     void UpdateRoundsWonIndicator()
     {
         RoundsWondUIUpdate();
+        RpcUpdateRoundsWonIndicator();
     }
 
     [ClientRpc]
@@ -32,7 +33,7 @@ public class PlayerGamePanelController : NetworkBehaviour
 
     private void RoundsWondUIUpdate()
     {
-        if(GameManager.players.Count >= playerNumber - 1)
+        if(GameManager.players.Count >= playerNumber)
         {
             switch (GameManager.players[playerNumber - 1].wins)
             {

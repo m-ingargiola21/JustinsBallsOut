@@ -57,7 +57,7 @@ public class PlayerSetup : NetworkBehaviour
 
         if (GameManager.instance.m_GameIsFinished && !m_IsReady)
         {
-            if (CrossPlatformInputManager.GetButtonDown("Fire" + (m_LocalID + 1)))
+            if (CrossPlatformInputManager.GetButtonDown("Fire"))
             {
                 CmdSetReady();
             }

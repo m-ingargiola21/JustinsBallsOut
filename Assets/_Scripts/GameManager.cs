@@ -23,7 +23,7 @@ public class GameManager : NetworkBehaviour
     [SerializeField] DropRingAfterTime[] allStagePieces;
     [SerializeField] Transform[] allSpawnPoints;
 
-    public GameObject[] PlayerControls;
+    //public GameObject[] PlayerControls;
     //[SerializeField] PlayerManager[] players;
     //public PlayerManager[] Players
     //{
@@ -107,7 +107,7 @@ public class GameManager : NetworkBehaviour
         while (players.Count < LobbyManager.s_Singleton.numPlayers)
             yield return null;
 
-        yield return new WaitForSeconds(2.0f);
+        //yield return new WaitForSeconds(2.0f);
 
         yield return StartCoroutine(RoundStarting());
         yield return StartCoroutine(RoundPlaying());
@@ -164,7 +164,7 @@ public class GameManager : NetworkBehaviour
     [ClientRpc]
     void RpcRoundStarting()
     {
-        // As soon as the round starts reset the tanks and make sure they can't move.
+        // As soon as the round starts reset the players and make sure they can't move.
         ResetAllPlayers();
         ResetAllRamps();
         ResetAllStagePieces();
@@ -224,7 +224,7 @@ public class GameManager : NetworkBehaviour
     void RpcRoundPlaying()
     {
         MakeAllPlayersNotKinimetic();
-        EnablePlayerControl();
+        //EnablePlayerControl();
         StartCoroutine(WaitToEnablePlayers());
 
         // Clear the text from the screen.
@@ -292,7 +292,7 @@ public class GameManager : NetworkBehaviour
             yield return null;
         }
     }
-
+    
     private bool OnePlayerLeft()
     {
         int numPlayersLeft = 0;

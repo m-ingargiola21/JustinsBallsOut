@@ -53,6 +53,12 @@ public class PlayerMovement : NetworkBehaviour
     
     void Start()
     {
+        if(!isLocalPlayer)
+        {
+            Destroy(this);
+            return;
+        }
+
         distToGround = GetComponent<Collider>().bounds.extents.y;
 
         InputSetup();
@@ -60,12 +66,12 @@ public class PlayerMovement : NetworkBehaviour
 
     void InputSetup()
     {
-        moveVertical = "Vertical" + (localID + 1);
-        moveHorizontal = "Horizontal" + (localID + 1);
-        jumpInput = "Jump" + (localID + 1);
-        fireInput = "Fire" + (localID + 1);
+        moveVertical = "Vertical";
+        moveHorizontal = "Horizontal";
+        jumpInput = "Jump";
+        fireInput = "Fire";
 
-        GameManager.instance.PlayerControls[playerNumber - 1].SetActive(true);
+        //GameManager.instance.PlayerControls[playerNumber - 1].SetActive(true);
 
     }
 
